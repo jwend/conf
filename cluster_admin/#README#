@@ -1,0 +1,11 @@
+This directory contains scripts used to setup NIS, NFS, ntp, and iptables on the bw01 cluster.
+
+Please examine what each does before attempting to run them again, as they weren't necesarily all meant to be run more that once!!!
+
+Some take arguments, some don't, and some may damage the cluster if run again. 
+
+Their purpose was to automate configuration, and not for general admin use.
+
+
+
+

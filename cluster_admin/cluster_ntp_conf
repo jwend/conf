@@ -1,0 +1,11 @@
+#!/bin/bash
+
+while read node; do
+  eval echo "Enabling, stopping, and starting ntpd on $node..."
+
+ 
+   ssh -n $node systemctl enable ntpd || true
+   ssh -n $node systemctl stop ntpd || true
+   ssh -n $node systemctl start ntpd || true
+done <all
+echo done

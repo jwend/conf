@@ -1,0 +1,9 @@
+#!/bin/bash
+
+while read node; do
+  eval echo "Copying etc hosts to $node..."
+
+  scp /etc/hosts $node:/etc/hosts
+
+done <all
+echo done

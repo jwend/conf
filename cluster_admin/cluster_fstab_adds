@@ -1,0 +1,16 @@
+#!/bin/bash
+
+while read node; do
+  eval echo "Fixing nfs mounts on $node..."
+  ssh -n $node cp /etc/fstab /etc/fstab.bak
+  ssh -n $node "sed -e '/^master/ s/^#*/#/' -i /etc/fstab"
+  scp fstab_mounts $node:/tmp/fstab_mounts
+  ssh -n $node "cat /tmp/fstab_mounts >> /etc/fstab"
+  ssh -n $node umount /home || true  
+  ssh -n $node mv /home /home_local ||true
+  ssh -n $node mkdir /home || true
+  ssh -n $node umount /sharedscratch || true
+  ssh -n $node mount -a
+
+done <n
+echo done

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+while read node; do
+  eval echo "Turn off and disable iptables and firewalld on  $node..."
+  ssh -n $node systemctl stop iptables
+  ssh -n $node systemctl disable iptables
+  ssh -n $node systemctl stop firewalld
+  ssh -n $node systemctl disable firewalld
+
+done <n
+echo done

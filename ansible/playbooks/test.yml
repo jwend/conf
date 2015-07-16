@@ -1,0 +1,7 @@
+---
+- hosts: new
+  user: root
+  tasks:
+    - name: Mount home directory
+      mount: fstype=nfs name='/home' src='master:/export/home' state=mounted
+

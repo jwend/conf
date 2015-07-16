@@ -1,0 +1,11 @@
+#!/bin/bash
+
+while read node; do
+  eval echo "Copying nodes_iptables to $node..."
+
+  scp nodes_iptables $node:/etc/sysconfig/iptables
+  ssh -n $node systemctl stop iptables
+  ssh -n $node systemctl disable iptables
+
+done <nodes
+echo done

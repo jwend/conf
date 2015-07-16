@@ -1,0 +1,10 @@
+#!/bin/bash
+
+while read node; do
+  eval echo "Add mds1 fstab entry on $node..."
+  ssh -n $node 'echo "mds1:/home/export /sharedscratch2 nfs defaults 0 0" >> /etc/fstab'
+  ssh -n $node "mkdir -p /sharedscratch2"
+  ssh -n $node "mount /sharedscratch2"
+ 
+done <n
+echo done

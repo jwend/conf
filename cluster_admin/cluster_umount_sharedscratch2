@@ -1,0 +1,11 @@
+#!/bin/bash
+
+while read node; do
+  eval echo "Unmount sharedscratch2 on  $node..."
+
+ 
+    ssh -n $node 'umount -l /sharedscratch2'
+
+
+done <n
+echo done

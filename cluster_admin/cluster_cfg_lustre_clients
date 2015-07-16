@@ -1,0 +1,20 @@
+#!/bin/bash
+
+while read node; do
+  eval echo "Configure lustre client on $node..."
+  ssh -n $node 'echo "mds1:/home/export /sharedscratch2 nfs defaults 0 0" >> /etc/fstab'
+  ssh -n $node "mkdir -p /sharedscratch2"
+  ssh -n $node "mount /sharedscratch2"
+
+cp /boot/grub2/grub.cfg /boot/grub2/grub.cfg.bak
+
+echo $'sed -e "/^GRUB_DEFAULT=/ s/GRUB_DEFAULT=.*/GRUB_DEFAULT=\'Red Hat Enterprise Linux Server, with Linux 3.10.0-123.13.2.el7.x86_64\'/" -i /etc/default/grub' | ssh n003 bash
+
+grub2-mkconfig -o /boot/grub2/grub.cfg
+
+reboot
+
+
+ 
+done <n
+echo done

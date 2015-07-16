@@ -1,0 +1,11 @@
+#!/bin/bash
+
+while read node; do
+  eval echo "Setting version to 7.0 on $node..."
+
+ 
+    ssh -n $node 'echo "exclude=kernel*,glibc*" >> /etc/yum.conf'
+
+
+done <n
+echo done

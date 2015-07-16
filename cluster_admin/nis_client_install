@@ -1,0 +1,10 @@
+#!/bin/bash
+
+while read node; do
+  eval echo "Configuring nis client on $node..."
+  ssh -n $node yum -y install  ypbind rpcbind || true
+  ssh -n $node authconfig --enablenis --nisdomain=internal --nisserver=master --enablemkhomedir --update || true
+  ssh -n $node systemctl start rpcbind ypbind || true
+  ssh -n $node systemctl enable rpcbind ypbind || true  
+done <nodes
+echo done

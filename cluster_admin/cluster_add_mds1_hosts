@@ -1,0 +1,7 @@
+#!/bin/bash
+
+while read node; do
+  eval echo "Add mds1 to /etc/hosts on $node..."
+  ssh -n $node "sed -i '/172.16.0.15 n015 n015.bw01.usgs.gov/a 172.16.0.21 mds1 mds1.bw01.usgs.gov' /etc/hosts"
+done <n
+echo done

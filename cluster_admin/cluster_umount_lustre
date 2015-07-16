@@ -1,0 +1,11 @@
+#!/bin/bash
+
+while read node; do
+  eval echo "Unmount sharedlustre on  $node..."
+
+ 
+    ssh -n $node 'umount -l /sharedlustre'
+
+
+done <n
+echo done

@@ -1,0 +1,89 @@
+---
+- hosts: nodes
+  user: root
+  tasks:
+    - name: Copy id_rsa    
+      copy: src='/root/.ssh/id_rsa' dest='/root/.ssh/id_rsa' mode=0600
+    - name: Copy id_rsa.pub
+      copy: src='/root/.ssh/id_rsa.pub' dest='/root/.ssh/id_rsa.pub' mode=0644
+    - name: Disable known_host checking
+      lineinfile: dest=/etc/ssh/ssh_config line="StrictHostKeyChecking no"
+    - name: Disable SE Linux	
+      replace: > 
+       dest=/etc/selinux/config 
+       regexp='^SELINUX=.*' 
+       replace='SELINUX=disabled' 
+       backup=no
+    - name: Disable iptables
+      service: name=iptables state=stopped enabled=no             
+    - name: Install hosts
+      copy: src='../files/hosts' dest='/etc/hosts'
+    - name: Install resolv.conf    
+      copy: src='../files/resolv.conf' dest='/etc/resolv.conf'
+    - name: Insert gateway entry
+      lineinfile: dest=/etc/sysconfig/network line="GATEWAY=172.16.0.16"
+    - name: Install rpcbind
+      yum: name=rpcbind state=present
+    - name: Ensure rpcbind is running
+      service: name=rpcbind state=started enabled=yes
+    - name: Install nfs-utils
+      yum: name=nfs-utils state=present
+    - name: Unmount /home
+      command: umount /home
+    - name: Mount home directory
+      mount: fstype=nfs name='/home' src='master:/export/home' state=mounted
+    - name: Mount sharescratch directory
+      mount: fstype=nfs name='/sharedscratch' src='master:/export2/sharedscratch' state=mounted
+    - name: Intall ypbind
+      yum: name=ypbind state=present
+    - name: Insert NIS domain entry
+      lineinfile: dest=/etc/sysconfig/network line="NISDOMAIN=internal"
+    - name: Enable NIS authorization
+      command:  authconfig --enablenis --nisdomain=internal --nisserver=master --update
+    - name: Start and enable ypbind
+      service: name=ypbind state=started enabled=yes
+    - name: Install Environmental Modules package
+      yum: name=environment-modules state=present
+    - name: Install ntp.conf    
+      copy: src='../files/ntp.conf' dest='/etc/ntp.conf'
+    - name: Set time zone
+      command: ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime
+    - name: Set clock time zone
+      copy: src='../files/clock' dest='/etc/sysconfig/clock'
+    - name: Ensure ntpd is running
+      service: name=ntpd state=started enabled=yes
+    - name: Enable epel repository
+      yum: name=epel-release state=present
+    - name: Install Torque mom
+      yum: name=torque-mom state=present
+    - name: Install Torque clinet
+      yum: name=torque-client state=present
+    - name: Update /etc/torque/server_name
+      replace: dest=/etc/torque/server_name regexp=localhost replace=master
+    - name: Update /etc/torque/mom/config
+      replace: dest=/etc/torque/mom/config regexp=localhost replace=master
+    - name: Start and enable pbs_mom
+      service: name=pbs_mom state=started enabled=yes
+    - name: Install mpich
+      yum: name=mpich state=present
+    - name: Check location of mpich-x86_64 module file
+      stat: path=/etc/modulefiles/mpich-x86_64
+      register: mpich_stat
+    - name: Make /etc/modulefiles/mpi directory
+      command: mkdir -p /etc/modulefiles/mpi
+      when: mpich_stat.stat.exists
+    - name: Move the mpich-x86_64 module file
+      command: mv /etc/modulefiles/mpich-x86_64 /etc/modulefiles/mpi/mpich-x86_64
+      when: mpich_stat.stat.exists
+    - name: Install Lustre clent modules
+      yum: disable_gpg_check=yes state=present name="/sharedscratch/root/sw/lustre-client/lustre-client-modules-2.7.0-2.6.32_504.8.1.el6.x86_64.x86_64.rpm"
+    - name: Install Lustre clent
+      yum: disable_gpg_check=yes state=present name="/sharedscratch/root/sw/lustre-client/lustre-client-2.7.0-2.6.32_504.8.1.el6.x86_64.x86_64.rpm"
+    - name: modprobe lustre
+      command: modprobe lustre
+    - name: Install clustershell
+      yum: name=clustershell state=present
+    - name: Install shine
+      yum: disable_gpg_check=yes state=present name="/sharedscratch/root/sw/shine/shine-1.4-1.el6.noarch.rpm"
+    - name: Install emacs
+      yum: name=emacs state=present

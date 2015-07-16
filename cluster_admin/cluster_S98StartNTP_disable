@@ -1,0 +1,9 @@
+#!/bin/bash
+
+while read node; do
+  eval echo "Turn off and disable S98StartNTP, ntpd works now with MST time servers on $node..."
+  ssh -n $node systemctl stop S98StartNTP
+  ssh -n $node systemctl disable S98StartNTP
+
+done <n
+echo done

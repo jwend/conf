@@ -1,0 +1,7 @@
+#!/bin/bash
+
+while read node; do
+  eval echo "Changing local pw for $1 on $node..."
+  ssh -n $node 'echo -e "<new pass>\n<new pass>" | passwd <user to change>' || true
+done <nodes
+echo done

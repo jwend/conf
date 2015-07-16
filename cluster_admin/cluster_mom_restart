@@ -1,0 +1,7 @@
+#!/bin/bash
+
+while read node; do
+  eval echo "Restarting pbs_mom on $node..."
+  ssh -n $node systemctl restart pbs_mom
+done <nodes
+echo done

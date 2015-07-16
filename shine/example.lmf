@@ -1,0 +1,210 @@
+#
+# This is an example of lustre model file. It contains a set of
+# configuration directives to install a simple Lustre filesystem.
+#
+# $Id$
+
+### Section 1 - Required directives
+
+# fs_name
+# The Lustre filesystem name (8 characters max).
+fs_name: example
+
+# nid_map
+# Hosts to Lnet NIDs mapping.
+#
+# Use multiple lines with the same nodes if you have several nids for
+# the same machines.
+#nid_map: nodes=nova[0-39] nids=nova[0-39]@tcp0
+
+nid_map: nodes=mds1 nids=mds1@tcp
+nid_map: nodes=oss1 nids=oss1@tcp
+nid_map: nodes=oss2 nids=oss2@tcp
+nid_map: nodes=oss3 nids=oss3@tcp
+nid_map: nodes=conf nids=conf@tcp
+nid_map: nodes=n[001-006] nids=n[001-006]@tcp
+nid_map: nodes=n[008-015] nids=n[008-015]@tcp
+nid_map: nodes=usgs-goodchild nids=usgs-goodchild@tcp
+
+
+
+# mount_path
+# Default clients mount point path.
+# Some variables could be used in 'mount_path', see -Path Variables- below.
+#mount_path: /example
+mount_path: /sharedlustre
+
+
+
+### Section 2 - Target definitions
+
+# Defines your Lustre filesystem targets.
+#
+# mgt|mdt|ost: [ tag=<RegExp> ] [ node=<RegExp> ] [ dev=<RegExp> ] 
+#              [ index=<RegExp> ] [ jdev=<RegExp> ] [ ha_node=<RegExp> ]
+#              [ group=<RegExp> ] [ mode={external|managed} ]
+#              [ network=<RegExp> ] [ active={yes|nocreate|no|manual} ]
+#
+# Here, we don't use any backend (no File nor ClusterDB), so we have to
+# fully describe our targets (no RegExp accepted). For this simple
+# example, only minimum target information is provided.
+
+# mgt
+# Management Target
+mgt: node=mds1 dev=/dev/mapper/vg_mds1-lv_ost3
+
+# mdt
+# MetaData Target
+mdt: node=mds1 dev=/dev/mapper/vg_mds1-lv_mdt1
+
+# ost
+# Object Storage Target(s)
+#ost: node=mds1 dev=/dev/mapper/vg_mds1-lv_ost1
+#ost: node=mds1 dev=/dev/mapper/vg_mds1-lv_ost2
+#ost: node=mds1 dev=/dev/mapper/vg_mds1-lv_ost3
+ost: node=oss1 dev=/dev/mapper/vgb-vb
+ost: node=oss1 dev=/dev/mapper/vgc-vc
+ost: node=oss1 dev=/dev/mapper/vgd-vd
+ost: node=oss1 dev=/dev/mapper/vge-ve
+ost: node=oss1 dev=/dev/mapper/vgf-vf
+ost: node=oss2 dev=/dev/mapper/vgb-vb
+ost: node=oss2 dev=/dev/mapper/vgc-vc
+ost: node=oss2 dev=/dev/mapper/vgd-vd
+ost: node=oss2 dev=/dev/mapper/vge-ve
+ost: node=oss2 dev=/dev/mapper/vgf-vf
+ost: node=oss3 dev=/dev/mapper/vgb-vb
+ost: node=oss3 dev=/dev/mapper/vgc-vc
+ost: node=oss3 dev=/dev/mapper/vgd-vd
+ost: node=oss3 dev=/dev/mapper/vge-ve
+ost: node=oss3 dev=/dev/mapper/vgf-vf
+ost: node=oss1 dev=/dev/mapper/vgg-vg
+ost: node=oss1 dev=/dev/mapper/vgh-vh
+ost: node=oss1 dev=/dev/mapper/vgi-vi
+ost: node=oss1 dev=/dev/mapper/vgj-vj
+ost: node=oss1 dev=/dev/mapper/vgk-vk
+ost: node=oss2 dev=/dev/mapper/vgg-vg
+ost: node=oss2 dev=/dev/mapper/vgh-vh
+ost: node=oss2 dev=/dev/mapper/vgi-vi
+ost: node=oss2 dev=/dev/mapper/vgj-vj
+ost: node=oss2 dev=/dev/mapper/vgk-vk
+
+
+
+# client
+# FS clients definition. Like targets, use multiple lines if you want.
+client: node=mds1
+client: node=oss[1-3]
+client: node=n[001-006]
+client: node=n[008-015]
+client: node=usgs-goodchild
+client: node=conf
+
+#client: node=nova[33-34]
+
+# Sometimes it is needed for some nodes to mount this FS on a different
+# mount point (not the default mount_path). In that case, use the
+# optional client parameter mount_path.
+# Some variables could be used in 'mount_path', see -Path Variables- below.
+# 
+#client: node=nova[35-38] mount_path=/my/specific/example
+
+# Also, to override default client mount options, add the following
+# mount_options inline option:
+#client: node=nova39 mount_path=/my/specific/example mount_options=noatime
+
+
+### Section 3 - Additionnal directives
+
+# description
+# Optional FS description
+description: Example Lustre Filesystem
+
+# stripe_size
+# Specify the stripe size in bytes. Default is 1048576 (1M)
+stripe_size: 1048576
+
+# stripe_count
+# Specify the number of OSTs each file should be stripped on.
+# If not defined, no explicit value is used and Lustre will apply its default behaviour.
+#stripe_count: 1
+
+#
+# mgt_format_params:
+# mdt_format_params:
+# ost_format_params:
+#
+# Optional argument that will be used by mkfs.lustre for a target. Default is
+# no option.
+#
+# ie: disable failover mode and enable failout instead
+# mdt_format_params: failover.mode=failout
+# ost_format_params: failover.mode=failout
+
+#
+# mgt_mkfs_options:
+# mdt_mkfs_options:
+# ost_mkfs_options:
+#
+# Optional argument for --mkfsoptions, by target type. You can use ext3 format
+# options here. Defaults is no option.
+# ie: do not reserve blocks for super-user.
+mgt_mkfs_options: -m 0
+mdt_mkfs_options: -m 0
+ost_mkfs_options: -m 0
+
+#
+# mgt_mount_options:
+# mdt_mount_options:
+# ost_mount_options:
+#
+# Optional argument used when starting a target. Default is no options.
+
+# ie: Enable ACL for MDT
+#mdt_mount_options: acl
+
+
+# mount_options
+# This define the default options to mount the filesystem on clients.
+#mount_options: acl,user_xattr
+
+#mount_options: nolock
+
+
+#
+# Quota
+#
+# Enable quota support.
+# In lustre 2.4 and above, all quota options described here are ignored
+# Possible values are yes or no (default is no).
+quota: no
+
+# Quota configuration options
+# Describe options for quota support, if quota enabled.
+#
+# quota_type:     (default is 'ug')
+# quota_iunit:    <number of inodes>
+# quota_bunit:    <size in MB>
+# quota_itune:    <percentage>
+# quota_btune:    <percentage>
+
+# Target Mount Path patterns
+#
+# -Path Variables-
+# Several variables could be used within these paths:
+#  $fs_name:  Filesystem name defined in 'fs_name:'
+#  $label:    Component label (ie: foo-OST0002)
+#  $type:     Component type ('mdt', 'mgt', 'ost', 'router', 'client')
+#  $index:    Target index, in decimal (ie: 1, 2, 36, ...) or in hex (ie. 0x2, 0xa5, 0x00FA)
+#  $dev:      Base name of target device path (ie: sdc)
+#  $jdev:     Base name of target journal device path
+mgt_mount_path: /mnt/$fs_name/mgt
+mdt_mount_path: /mnt/$fs_name/mdt/$index
+ost_mount_path: /mnt/$fs_name/ost/$index
+
+#
+# Routers
+#
+
+# nova7 and nova8 are declared as LNET routers.
+#router: node=nova[7-8]
+#router: node=mds1

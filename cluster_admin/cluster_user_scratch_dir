@@ -1,0 +1,8 @@
+#!/bin/bash
+
+while read node; do
+  eval echo "Making /scratch dir for user $1 group $2 on /scratch on node $node..."
+  ssh -n $node mkdir /scratch/$1
+  ssh -n $node chown $1:$2 /scratch/$1
+done <n
+echo done

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+while read node; do
+  eval echo "Setting version to 7.0 on $node..."
+
+ 
+    ssh -n $node "subscription-manager release --set 7.0" 
+
+
+done <all
+echo done

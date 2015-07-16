@@ -1,0 +1,7 @@
+#!/bin/bash
+
+while read node; do
+  eval echo "Adding sudoer to node $node..."
+  ssh -n $node 'echo "jwendel  ALL=(ALL:ALL) ALL" >> /etc/sudoers'
+done <n
+echo done

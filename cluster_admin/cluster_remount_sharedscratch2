@@ -1,0 +1,9 @@
+#!/bin/bash
+
+while read node; do
+  eval echo "Configure lustre client on $node..."
+  ssh -n $node "umount /sharedscratch2"
+  ssh -n $node "mount /sharedscratch2"
+
+done <n
+echo done

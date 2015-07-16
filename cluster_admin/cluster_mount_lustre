@@ -1,0 +1,11 @@
+#!/bin/bash
+
+while read node; do
+  eval echo "Mounting sharedlustre on $node..."
+
+ 
+    ssh -n $node 'mount -t lustre mds1@tcp:/example /sharedlustre'
+
+
+done <n
+echo done

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+while read node; do
+  eval echo "Disable selinux  on $node..."
+  ssh -n $node cp /etc/selinux/config /etc/selinux/config.bak
+  ssh -n $node "sed -e '/^SELINUX=/ s/=.*/=disabled/' -i /etc/selinux/config"
+
+done <n
+echo done

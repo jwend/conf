@@ -1,0 +1,36 @@
+node 7, 13-15 need fstab updates, grub fix, and lustre client install
+
+
+080515
+
+Got the Please accept the licence non sense on reboot of n001 and n002 the
+day after changing kernel in /etc/grub2. reboots that same day worked
+On n002 ran: (May have to apply this to other machines, google not much help)
+[root@n002 ~]# subscription-manager list
+
++-------------------------------------------+
+    Installed Product Status
++-------------------------------------------+
+Product Name:   Red Hat Enterprise Linux Server
+Product ID:     69
+Version:        7.1
+Arch:           x86_64
+Status:         Subscribed
+Status Details: 
+Starts:         06/17/2014
+Ends:           06/17/2015
+
+[root@n002 ~]#  subscription-manager remove --all
+1 subscription removed at the server.
+1 local certificate has been deleted.
+[root@n002 ~]# subscription-manager unregister
+System has been unregistered.
+[root@n002 ~]# subscription-manager clean
+All local data removed
+[root@n002 ~]# reboot
+Connection to n002 closed by remote host.
+Connection to n002 closed.
+[root@n003 ~]# ssh n002
+Last login: Fri May  8 14:27:31 2015 from n003
+
+                       WARNING TO USERS OF THIS SYSTEM

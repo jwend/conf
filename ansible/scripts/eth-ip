@@ -1,0 +1,11 @@
+cobbler system add --name=n006 --mac 00:23:54:65:be:03 --ip-address=172.16.0.6 --interface=eth0 --profile centos-x86_64 --gateway=172.16.0.16 --static=1 --subnet=255.255.255.0
+cobbler system add --name=n005 --mac 00:23:54:65:be:3c --ip-address=172.16.0.5 --interface=eth0 --profile centos-x86_64 --gateway=172.16.0.16 --static=1 --subnet=255.255.255.0
+cobbler system add --name=n001 --mac 00:23:54:65:be:5d --ip-address=172.16.0.1 --interface=eth0 --profile centos-x86_64 --gateway=172.16.0.16 --static=1 --subnet=255.255.255.0
+cobbler system add --name=n002 --mac 00:23:54:65:be:13 --ip-address=172.16.0.2 --interface=eth0 --profile centos-x86_64 --gateway=172.16.0.16 --static=1 --subnet=255.255.255.0
+cobbler system add --name=n008 --mac 00:23:54:65:be:3a --ip-address=172.16.0.8 --interface=eth0 --profile centos-x86_64 --gateway=172.16.0.16 --static=1 --subnet=255.255.255.0
+cobbler system add --name=n004 --mac 00:23:54:65:be:5b --ip-address=172.16.0.4 --interface=eth0 --profile centos-x86_64 --gateway=172.16.0.16 --static=1 --subnet=255.255.255.0
+cobbler system add --name=n011 --mac 00:23:54:65:be:1e --ip-address=172.16.0.11 --interface=eth0 --profile centos-x86_64 --gateway=172.16.0.16 --static=1 --subnet=255.255.255.0
+cobbler system add --name=n003 --mac 00:23:54:65:be:2d --ip-address=172.16.0.3 --interface=eth0 --profile centos-x86_64 --gateway=172.16.0.16 --static=1 --subnet=255.255.255.0
+cobbler system add --name=n010 --mac 00:23:54:65:bd:ff --ip-address=172.16.0.10 --interface=eth0 --profile centos-x86_64 --gateway=172.16.0.16 --static=1 --subnet=255.255.255.0
+cobbler system add --name=n012 --mac 00:23:54:65:be:0b --ip-address=172.16.0.12 --interface=eth0 --profile centos-x86_64 --gateway=172.16.0.16 --static=1 --subnet=255.255.255.0
+cobbler system add --name=n009 --mac 00:23:54:65:be:11 --ip-address=172.16.0.9 --interface=eth0 --profile centos-x86_64 --gateway=172.16.0.16 --static=1 --subnet=255.255.255.0

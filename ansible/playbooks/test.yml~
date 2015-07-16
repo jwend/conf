@@ -1,0 +1,8 @@
+---
+- hosts: gc
+  user: root
+  tasks:
+    - name: Copy id_rsa    
+      copy: src='/root/.ssh/id_rsa' dest='/root/.ssh/id_rsa' mode=0600
+    - name: Copy id_rsa.pub
+      copy: src='/root/.ssh/id_rsa.pub' dest='/root/.ssh/id_rsa.pub' mode=0644

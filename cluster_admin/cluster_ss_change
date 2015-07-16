@@ -1,0 +1,11 @@
+#!/bin/bash
+
+while read node; do
+  eval echo "Fixing /sharedscratch mounts on $node..."
+  ssh -n $node cp /etc/fstab /etc/fstab.bak
+  ssh -n $node "sed -e '/^master:\/export\/shared/ s/export/export2/' -i /etc/fstab"
+  ssh -n $node umount /sharedscratch || true  
+  ssh -n $node mount /sharedscratch
+
+done <n
+echo done

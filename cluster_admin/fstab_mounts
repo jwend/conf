@@ -1,0 +1,2 @@
+master:/export/home /home nfs defaults 0 0
+master:/export/sharedscratch /sharedscratch nfs defaults 0 0

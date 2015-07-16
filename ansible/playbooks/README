@@ -1,0 +1,7 @@
+To run specific playbooks, that is, those that take a particular host:
+
+
+ansible-playbook specific-target-tasks.yml --extra-vars "target=conf"
+
+The target var is referecnce in the specific-<...>.yml file
+ 
